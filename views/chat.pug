@@ -3,6 +3,12 @@ extends layout
 block content
   h1= title
   a#exit-btn(href='/') 방 나가기
+  #number
+    | 참여 인원 수:
+    #number-count=number
+  #owner
+    | 방장:
+    #room-owner(style='color:'+room.owner)=room.emit
   fieldset
     legend 채팅 내용
     #chat-list
@@ -35,6 +41,7 @@ block content
       path: '/socket.io'
     });
     socket.on('join', function (data) {
+      document.querySelector('#number-count').textContent=(data.number);
       var div = document.createElement('div');
       div.classList.add('system');
       var chat = document.createElement('div');
@@ -43,6 +50,7 @@ block content
       document.querySelector('#chat-list').appendChild(div);
     });
     socket.on('exit', function (data) {
+      document.querySelector('#number-count').textContent=(data.number);
       var div = document.createElement('div');
       div.classList.add('system');
       var chat = document.createElement('div');
@@ -58,7 +66,13 @@ block content
         div.classList.add('other');
       }
       var name = document.createElement('div');
-      name.textContent = data.user;
+      var banBtn = document.createElement('button');
+      banBtn.className='ban';
+      banBtn.textContent = '강퇴';
+      nameBtn.dataset.socket=data.socket;
+      nameBtn.addEventListener('click',ban);
+      nameBtn.appendChild(banBtn);
+
       div.appendChild(name);
       if (data.chat) {
         var chat = document.createElement('div');
@@ -102,4 +116,22 @@ block content
       };
       xhr.open('POST', '/room/#{room._id}/gif');
       xhr.send(formData);
+    });
+    function ban(e) {
+      var id = e.target.dataset.socket;
+      var name = e.target.textContent;
+      var owner = document.getElementById('room-owner').textContent;
+      cosole.log('#{user}',owner){
+      if('#{user}' == owner && name != owner){
+        if(confirm(`${name}를 강퇴하시겠습니까?`)){
+          socket.emit('ban',{ id });
+        }
+      }
+    }
+    Array.prototype.forEach.call(document.querySelectorAll('.ban'),function(el){
+      el.addEventListener('click',ban);
+    });
+    socket.on('ban',function(){
+      alert('강퇴되었습니다.');
+      location.href = '/';
     });

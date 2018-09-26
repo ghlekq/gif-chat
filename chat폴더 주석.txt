@@ -1,0 +1,121 @@
+실행
+cmd 에서 db실행 
+C:\Program Files\MongoDB\Server\4.0\bin 에서
+mongod
+
+같은폴더에서 cmd하나 더켜서 
+mongo
+
+use admin
+user:miso
+pwd:misoadmin
+roles:root(모든권한)
+
+nodemon
+
+이후 로그인은
+C:\Program Files\MongoDB\Server\4.0\bin 에서
+mongod --auth (관리자db생성해둔걸로 로그인)
+
+같은폴더에서
+mongo admin -u miso -p misoadmin
+
+
+프로젝트 설정
+npm i connect-flash cookie-parser dotev express express-session morgan pug
+
+npm i -D nodemon
+
+npm i socket.io
+
+npm i mongoose multer axios color-hash
+
+.env 
+비밀키저장파일
+
+몽고디비 실행 
+몽고디비경로이동
+mongod --auth
+
+실행(app.js가 실행)
+npm start
+
+app.js
+실행 메인파일
+실행시 cmd/bash에 포트번호 알림
+
+socket.js
+웹소켓 연결부분 
+socketio를 이용하고있음
+유저의 접속을 체크해준다.
+
+views 폴더
+프론트엔드 부분을나타내는 파일들이 들어있다.
+pug 파일들로 이루어져있으며 
+html파일로 변환가능 (비슷한 구조로 이루워져있음)
+script. 부분 아래가 메인 코드
+
+index.pug 
+메인 화면 이부분에서 유저의 양방향 접속을 확인가능
+프로트엔드,웹소켓 스크립트부분
+
+chat.pug
+채팅방의 프론트엔드
+
+layout.pug
+스타일 시트 적용 public에 있는 main.css 확인
+
+main.pug
+현재 생성되어 있는 채팅 방들의 목록을 확인 가능하다.
+
+room.pug
+채팅방 생성 프론트엔드 참가인원 제한은
+최소2에서 최대 10명으로 제한해놓음(수정가능)
+비밀번호 설정이 가능하며 미입력시 공개방으로 생성된다.
+
+
+schemas 폴더
+디비 폴더
+
+chat.js
+채팅방의 db정보를 저장
+
+room.js
+생성되는 채팅방의정보를 저장 (참가인원수,방생성자,암호키 여부,방제목)
+
+index.js
+몽고디비의 연결을 확인
+
+연결확인시 연결성공
+
+연결 중 에러 발생 시 연결 에러가 표시되며
+
+충돌 혹은 끊김이 있을때 연결이 끊어졌습니다.와 연결 재시도 알림 후
+연결 재시도
+
+routes 폴더
+라우터 파일저장
+
+index.js 
+라우터 정보를 저장
+
+public
+css파일 및 모든폴더에서 공동으로 필요할 파일들을 저장
+
+main.css
+메인 화면 css 저장
+
+잔기능 추가
+채팅방 현재 인원수 실시간 업데이트
+(해결)
+쿠키를 암호화 시켜서 저장했는데
+socket.js 의 connect.sid가 암호화된 쿠키
+시스템 메시지,채팅방 내용 db에 저장
+npm i cookie-signature 설치
+(해결)
+
+방장기능(+방장위임)
+(해결)
+
+감퇴기능
+(해결)
